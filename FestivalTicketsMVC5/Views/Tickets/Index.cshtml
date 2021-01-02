@@ -1,0 +1,70 @@
+﻿@model PagedList.IPagedList<FestivalTicketsMVC5.Models.Ticket>
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Tickets</h2>
+
+
+
+<p class="clearfix">
+    @Html.ActionLink("Create new ticket", "Create", null, new { @class = "btn btn-primary btn-lg" })
+</p>
+<br />
+
+<div class="col-md-6">
+    @using (Html.BeginForm("Index", "Tickets"))
+    {
+       
+        @Html.Label("From price")
+        @Html.TextBox("PriceFrom", null, new { @type = "number", @class = "form-control" }) <br />
+        @Html.Label("To price")
+        @Html.TextBox("PriceTo", null, new { @type = "number", @class = "form-control" }) <br />
+        @Html.Label("From date purchase")
+        @Html.TextBox("DateFrom", null, new { @type = "date", @class = "form-control" }) <br />
+        @Html.Label("To date purchase")
+        @Html.TextBox("DateTo", null, new { @type = "date", @class = "form-control" }) <br />
+
+
+        @Html.Hidden("sort", (string)ViewBag.chosenSort)
+        <input type="submit" value="Filter" class="btn btn-warning" />
+        <br />
+        <br />
+        <div>
+            @Html.ActionLink("Refresh table", "Index")
+        </div>
+
+    }
+</div>
+
+
+<div class="col-md-6">
+    @using (Html.BeginForm("Index", "Tickets", FormMethod.Get))
+    {
+        @Html.DropDownList("sort", ViewBag.selectionList as SelectList, new { @class = "form-control" })
+        <br />
+       
+        @Html.Hidden("PriceFrom", (decimal?)ViewBag.filter.PriceFrom)
+        @Html.Hidden("PriceTo", (decimal?)ViewBag.filter.PriceTo)
+        @Html.Hidden("DateFrom", (DateTime?)ViewBag.filter.DateFrom)
+        @Html.Hidden("DateTo", (DateTime?)ViewBag.filter.DateTo)
+
+        <input type="submit" value="Sort" class="btn btn-primary" />
+        <br />
+
+    }
+</div>
+
+
+
+
+@{
+    Html.RenderPartial("_TicketList");
+}
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+
+

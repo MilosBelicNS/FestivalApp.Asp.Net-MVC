@@ -1,0 +1,16 @@
+﻿@model IEnumerable<FestivalTicketsMVC5.Models.TicketType>
+
+<table class="table table-bordered table-striped">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        Html.RenderPartial("_TicketTypeItem", item);
+    }
+
+</table>

@@ -1,0 +1,58 @@
+﻿@model PagedList.IPagedList<FestivalTicketsMVC5.Models.TicketType>
+@using PagedList.Mvc
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Ticket types</h2>
+
+<p class="clearfix">
+    @Html.ActionLink("Create new type of ticket", "Create", null, new { @class = "btn btn-primary btn-lg" })
+</p>
+<br />
+
+
+<div class="col-md-6">
+    @using (Html.BeginForm("Index", "Festivals"))
+    {
+        @Html.Label("Name")
+        @Html.TextBox("Name", null, new { @class = "form-control" }) <br />
+       
+
+        @Html.Hidden("sort", (string)ViewBag.chosenSort)
+        <input type="submit" value="Filter" class="btn btn-warning" />
+        <br />
+        <br />
+        <div>
+            @Html.ActionLink("Refresh table", "Index")
+        </div>
+
+    }
+</div>
+
+
+<div class="col-md-6">
+    @using (Html.BeginForm("Index", "TicketTypes", FormMethod.Get))
+    {
+        @Html.DropDownList("sort", ViewBag.selectionList as SelectList, new { @class = "form-control" })
+        <br />
+        @Html.Hidden("Name", (string)ViewBag.filter.Name)
+       
+        <input type="submit" value="Sort" class="btn btn-primary" />
+        <br />
+
+    }
+</div>
+
+
+
+
+@{
+    Html.RenderPartial("_TicketTypesList");
+}
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+

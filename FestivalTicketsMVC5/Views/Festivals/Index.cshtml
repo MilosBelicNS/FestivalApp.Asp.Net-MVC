@@ -1,0 +1,69 @@
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<FestivalTicketsMVC5.Models.Festival>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Festivals</h2>
+
+<p class="clearfix">
+    @Html.ActionLink("Create new festival", "Create", null, new { @class = "btn btn-primary btn-lg" })
+</p>
+<br />
+
+<div class="col-md-6">
+    @using (Html.BeginForm("Index", "Festivals"))
+    {
+        @Html.Label("Name")
+        @Html.TextBox("Name", null, new { @class = "form-control" }) <br />
+        @Html.Label("Place")
+        @Html.TextBox("Place", null, new { @class = "form-control" }) <br />
+        @Html.Label("From date")
+        @Html.TextBox("FromDate", null, new { @type = "date", @class = "form-control" }) <br />
+        @Html.Label("To date")
+        @Html.TextBox("ToDate", null, new { @type = "date", @class = "form-control" }) <br />
+        @Html.Label("From rate")
+        @Html.TextBox("FromRate", null, new { @type = "number", @class = "form-control" }) <br />
+        @Html.Label("To rate")
+        @Html.TextBox("ToRate", null, new { @type = "number", @class = "form-control" }) <br />
+
+        @Html.Hidden("sort", (string)ViewBag.chosenSort)
+        <input type="submit" value="Filter" class="btn btn-warning" />
+        <br />
+        <br />
+        <div>
+            @Html.ActionLink("Refresh table", "Index")
+        </div>
+
+    }
+</div>
+
+
+<div class="col-md-6">
+    @using (Html.BeginForm("Index", "Festivals", FormMethod.Get))
+    {
+        @Html.DropDownList("sort", ViewBag.selectionList as SelectList, new { @class = "form-control" })
+        <br />
+        @Html.Hidden("Name", (string)ViewBag.filter.Name)
+        @Html.Hidden("Place", (string)ViewBag.filter.Place)
+        @Html.Hidden("FromDate", (DateTime?)ViewBag.filter.FromDate)
+        @Html.Hidden("ToDate", (DateTime?)ViewBag.filter.ToDate)
+        @Html.Hidden("FromRate", (double?)ViewBag.filter.FromRate)
+        @Html.Hidden("ToRate", (double?)ViewBag.filter.ToRate)
+        <input type="submit" value="Sort" class="btn btn-primary" />
+        <br />
+
+    }
+</div>
+
+
+
+
+@{
+    Html.RenderPartial("_FestivalList");
+}
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
