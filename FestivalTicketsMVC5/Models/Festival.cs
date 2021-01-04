@@ -19,13 +19,13 @@ namespace FestivalTicketsMVC5.Models
         [Required]
         [DataType(DataType.Date)]
         [Display(Name = "Date ")]
-        [CurrentValidation(ErrorMessage = "You can only choose the future!")]
+        [CurrentValidation(ErrorMessage = "You can only select the future!")]
         public DateTime DateF { get; set; }
         [Required]
         [Range(1, 5)]
         public double Rate { get; set; }
         [Required]
-        [Range(0, 300000)]
+        [Range(1, 300000)]
         [Display(Name="Ticket capacity")]
         public int EventCapacity { get; set; }
 
